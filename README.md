@@ -1,5 +1,4 @@
 # study
-# LearningNotes
   ---
 
 ## 第一部分：
