@@ -1,0 +1,6 @@
+想必大家在撸码中都发现了一个问题：从Android原生界面第一次跳转到React Native界面时，会有短暂的白屏过程，然后才会加载出界面。下次再跳转就不会出现类似问题。并且当我们杀死应用，重新启动App从Android Activity跳转到RN界面，依然会出现短暂白屏。
+
+为什么第一次加载React Native界面会出现短暂白屏呢？大家别忘了，react native的渲染机制是对于JsBundle的加载。项目中所有的js文件最终会被打包成一个JsBundle文件，android环境下Bundle文件为：‘index.android.bundle’。系统在第一次渲染界面时，会首先加载JsBundle文件。那么问题肯定出现在加载JsBundle这个过程，即出现白屏可能是因为JsBundle正在加载。发现了原因，我们继续查看源码，看看是否能从源码中得知一二。
+
+当在原生的app里面加载rn模块的时候，第一次加载的时候会发现加载的时候过长，白屏出现时间过长，这个因为生成rootview的时间过长导致，通过分析react native启动流程可以看出是因为createRootView和startReactApplication消耗时间较长，简单来说
+那么我们可以提前加载bundle文件,比如可以在application生成的时候提前加载。
